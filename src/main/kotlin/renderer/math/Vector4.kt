@@ -34,6 +34,8 @@ data class Vector4(
     }
 
     companion object {
-
+        fun worldRight() = Vector4(1.0, 0.0, 0.0)
+        fun worldUp() = Vector4(0.0, 1.0, 0.0)
+        fun worldForward() = Vector4(0.0, 0.0, 1.0)
     }
 }
