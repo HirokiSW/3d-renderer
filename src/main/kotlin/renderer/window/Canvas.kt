@@ -2,6 +2,8 @@ package renderer.window
 
 import renderer.classifications.Renderable
 import renderer.classifications.Updatable
+import renderer.constants.Perspective
+import renderer.constants.Screen
 import renderer.core.Camera
 import renderer.core.Controller
 import renderer.mesh.Triangle3D
@@ -18,13 +20,16 @@ class Canvas: JComponent() {
     val updatables = mutableListOf<Updatable>()
 
     init {
-        preferredSize = Dimension(800, 600)
+        preferredSize = Dimension(Screen.WIDTH, Screen.HEIGHT)
         isFocusable = true
         requestFocusInWindow()
         addKeyListener(player)
     }
 
     override fun paintComponent(g: Graphics) {
+        Screen.WIDTH = width
+        Screen.HEIGHT = height
+        Perspective.ASPECT_RATIO = Screen.WIDTH.toDouble()/Screen.HEIGHT
         val g2d = g as Graphics2D
         val revert = g2d.transform
         g2d.background = Color.BLACK

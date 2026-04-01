@@ -1,5 +1,6 @@
 package renderer.math
 
+import renderer.constants.Perspective
 import kotlin.math.acos
 import kotlin.math.sin
 import kotlin.math.cos
@@ -46,12 +47,13 @@ data class Matrix4(val m: DoubleArray = DoubleArray(16)) {
             0.0, 0.0, 0.0, 1.0
         ))
 
-        fun projection(aspectRatio: Double, angleOfView: Double, zNear: Double, zFar: Double): Matrix4 {
-            val fov = 1.0/tan(angleOfView/2.0)
-            val depthNormalize = zFar/(zFar - zNear)
-            val depthOffset = (-zFar*zNear)/(zFar - zNear)
+        fun projection(): Matrix4 {
+            val fov = 1.0/tan(Perspective.ANGLE_OF_VIEW/2.0)
+            val fovRatio = fov/ Perspective.ASPECT_RATIO
+            val depthNormalize = Perspective.Z_FAR /(Perspective.Z_FAR - Perspective.Z_NEAR)
+            val depthOffset = (-Perspective.Z_FAR*Perspective.Z_NEAR)/(Perspective.Z_FAR - Perspective.Z_NEAR)
             return Matrix4(doubleArrayOf(
-                fov/aspectRatio, 0.0, 0.0, 0.0,
+                fovRatio, 0.0, 0.0, 0.0,
                 0.0, fov, 0.0, 0.0,
                 0.0, 0.0, depthNormalize, 1.0,
                 0.0, 0.0, depthOffset, 0.0
