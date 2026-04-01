@@ -2,7 +2,7 @@ package renderer.mesh
 
 import renderer.math.Vector4
 
-data class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()) {
+class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()) {
     var pos = Vector4()
     var axis = Vector4.worldUp()
     var referenceAxis = Vector4.worldUp()

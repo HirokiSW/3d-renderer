@@ -6,7 +6,7 @@ import kotlin.math.sin
 import kotlin.math.cos
 import kotlin.math.tan
 
-data class Matrix4(var m: DoubleArray = DoubleArray(16)) {
+class Matrix4(var m: DoubleArray = DoubleArray(16)) {
     override fun equals(other: Any?): Boolean {
         if (other !is Matrix4) return false
         return m.contentEquals(other.m)
