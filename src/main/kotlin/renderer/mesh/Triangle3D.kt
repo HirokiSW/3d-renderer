@@ -45,18 +45,8 @@ class Triangle3D(
 
     operator fun timesAssign(m: Matrix4) { p1 = m*p1; p2 = m*p2; p3 = m*p3 }
 
-    fun projectToScreen() {
-        this *= Matrix4.projection()
-        p1 /= p1.w; p2 /= p2.w; p3 /= p3.w
-    }
-    fun scaleToScreen() {
-        p1.x = (p1.x + 1.0)*0.5*Screen.WIDTH; p1.y = (1.0 - p1.y)*0.5*Screen.HEIGHT
-        p2.x = (p2.x + 1.0)*0.5*Screen.WIDTH; p2.y = (1.0 - p2.y)*0.5*Screen.HEIGHT
-        p3.x = (p3.x + 1.0)*0.5*Screen.WIDTH; p3.y = (1.0 - p3.y)*0.5*Screen.HEIGHT
-    }
-
     fun centroid() = (p1 + p2 + p3)/3.0
     fun normal() = ((p2 - p1).cross(p3 - p2)).normalize()
     fun viewDepth() = (p1.z + p2.z + p3.z)/3.0
-    fun facingCamera(pov: Camera) = (centroid() - pov.pos).dot(normal())
+    fun facingCamera(pov: Camera) = (centroid() - pov.pos).dot(normal()) < 0.0
 }

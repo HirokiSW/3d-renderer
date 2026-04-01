@@ -43,7 +43,7 @@ class Canvas: JComponent() {
         for (rdr in renderables) {
             allTris.addAll(rdr.trisToRender)
         }
-        allTris.sortByDescending { it.viewDepth }
+        allTris.sortByDescending { it.viewDepth() }
         for (tri in allTris) {
             tri.draw(g2d)
         }
