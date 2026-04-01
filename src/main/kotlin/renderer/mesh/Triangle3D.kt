@@ -11,7 +11,7 @@ import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.geom.Path2D
 
-class Triangle3D(
+data class Triangle3D(
     var p1: Vector4 = Vector4(),
     var p2: Vector4 = Vector4(),
     var p3: Vector4 = Vector4()
