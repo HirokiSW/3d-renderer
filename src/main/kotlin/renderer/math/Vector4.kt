@@ -5,10 +5,10 @@ import kotlin.math.cos
 import kotlin.math.sqrt
 
 data class Vector4(
-    val x: Double = 0.0,
-    val y: Double = 0.0,
-    val z: Double = 0.0,
-    val w: Double = 1.0
+    var x: Double = 0.0,
+    var y: Double = 0.0,
+    var z: Double = 0.0,
+    var w: Double = 1.0
 ) {
     operator fun plus(s: Double) = Vector4(x+s, y+s, z+s, w)
     operator fun minus(s: Double) = Vector4(x-s, y-s, z-s, w)

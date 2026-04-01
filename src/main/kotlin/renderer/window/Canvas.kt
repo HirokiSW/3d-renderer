@@ -45,7 +45,7 @@ class Canvas: JComponent() {
         }
         allTris.sortByDescending { it.viewDepth }
         for (tri in allTris) {
-            tri.drawTriangle(g2d)
+            tri.draw(g2d)
         }
     }
 
