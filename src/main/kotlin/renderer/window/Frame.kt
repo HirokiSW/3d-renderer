@@ -18,8 +18,8 @@ class Frame: JFrame() {
     }
 
     private fun startAnimation() {
-        Timer(Screen.MILISECONDS_PER_FRAME) {
-            canvas.updatePositions(Screen.MILISECONDS_PER_FRAME)
+        Timer(Screen.MILLISECONDS_PER_FRAME) {
+            canvas.updatePositions(Screen.MILLISECONDS_PER_FRAME)
             canvas.repaint()
         }.start()
     }
