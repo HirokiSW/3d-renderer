@@ -21,9 +21,7 @@ object Rasterizer {
         val culled = mutableListOf<Triangle3D>()
         for (tri in tris) {
             val isFacingCamera = (tri.centroid() - pov.pos).dot(tri.normal()) < 0.0
-            if (!isFacingCamera) {
-                return mutableListOf<Triangle3D>()
-            }
+            if (!isFacingCamera) return mutableListOf<Triangle3D>()
             tri *= Matrix4.view(pov)
             culled.addAll(Clipper.depthClip(tri))
         }
@@ -33,12 +31,21 @@ object Rasterizer {
         val projected = mutableListOf<Triangle3D>()
         for (tri in tris) {
             tri *= Matrix4.projection()
-            tri.p1 /= tri.p1.w; tri.p2 /= tri.p2.w; tri.p3 /= tri.p3.w
-            tri.p1.x = (tri.p1.x + 1.0)*0.5* Screen.WIDTH; tri.p1.y = (1.0 - tri.p1.y)*0.5*Screen.HEIGHT
-            tri.p2.x = (tri.p2.x + 1.0)*0.5*Screen.WIDTH; tri.p2.y = (1.0 - tri.p2.y)*0.5*Screen.HEIGHT
-            tri.p3.x = (tri.p3.x + 1.0)*0.5*Screen.WIDTH; tri.p3.y = (1.0 - tri.p3.y)*0.5*Screen.HEIGHT
+            perspectiveDivide(tri)
+            scaleToScreen(tri)
             projected.addAll(Clipper.screenClip(tri))
         }
         return projected
+    }
+
+    private fun perspectiveDivide(tri: Triangle3D) {
+        tri.p1 /= tri.p1.w
+        tri.p2 /= tri.p2.w
+        tri.p3 /= tri.p3.w
+    }
+    private fun scaleToScreen(tri: Triangle3D) {
+        tri.p1.x = (tri.p1.x + 1.0)*0.5*Screen.WIDTH;  tri.p1.y = (1.0 - tri.p1.y)*0.5*Screen.HEIGHT
+        tri.p2.x = (tri.p2.x + 1.0)*0.5*Screen.WIDTH;  tri.p2.y = (1.0 - tri.p2.y)*0.5*Screen.HEIGHT
+        tri.p3.x = (tri.p3.x + 1.0)*0.5*Screen.WIDTH;  tri.p3.y = (1.0 - tri.p3.y)*0.5*Screen.HEIGHT
     }
 }
