@@ -25,7 +25,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
     operator fun get(row: Int, col: Int): Double = m[col*4 + row]
     operator fun set(row: Int, col: Int, value: Double) { m[col*4 + row] = value }
 
-    operator fun times(v: Vector4) = Vector4(
+    operator fun times(v: Vector3) = Vector3(
         v.x*this[0, 0] + v.y*this[1, 0] + v.z*this[2, 0] + v.w*this[3, 0],
         v.x*this[0, 1] + v.y*this[1, 1] + v.z*this[2, 1] + v.w*this[3, 1],
         v.x*this[0, 2] + v.y*this[1, 2] + v.z*this[2, 2] + v.w*this[3, 2],
@@ -61,7 +61,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
                 0.0, 0.0, depthOffset, 0.0
             ))
         }
-        fun translation(pos: Vector4) = Matrix4(doubleArrayOf(
+        fun translation(pos: Vector3) = Matrix4(doubleArrayOf(
             1.0, 0.0, 0.0, 0.0,
             0.0, 1.0, 0.0, 0.0,
             0.0, 0.0, 1.0, 0.0,
@@ -105,7 +105,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
             ))
         }
 
-        fun rotationSpin(axis: Vector4, angRad: Double): Matrix4 {
+        fun rotationSpin(axis: Vector3, angRad: Double): Matrix4 {
             val x = axis.x; val y = axis.y; val z = axis.z
             val c = cos(angRad);
             val s = sin(angRad);
@@ -117,7 +117,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
                 0.0, 0.0, 0.0, 1.0
             ))
         }
-        fun rotationTilt(newAxis: Vector4, worldAxis: Vector4): Matrix4 {
+        fun rotationTilt(newAxis: Vector3, worldAxis: Vector3): Matrix4 {
             val axis = worldAxis.cross(newAxis)
             if (axis.length() < 1e-6) return identity()
             val angRad = acos(worldAxis.dot(newAxis))

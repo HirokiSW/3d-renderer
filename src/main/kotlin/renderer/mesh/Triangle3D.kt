@@ -3,18 +3,16 @@ package renderer.mesh
 import renderer.classifications.Drawable
 import renderer.constants.Properties
 import renderer.constants.RenderMode
-import renderer.constants.Screen
-import renderer.core.Camera
 import renderer.math.Matrix4
-import renderer.math.Vector4
+import renderer.math.Vector3
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.geom.Path2D
 
 data class Triangle3D(
-    var p1: Vector4 = Vector4(),
-    var p2: Vector4 = Vector4(),
-    var p3: Vector4 = Vector4()
+    var p1: Vector3 = Vector3(),
+    var p2: Vector3 = Vector3(),
+    var p3: Vector3 = Vector3()
 ): Drawable {
     override fun draw(g2d: Graphics2D) {
         val revert = g2d.transform

@@ -2,15 +2,15 @@ package renderer.mesh
 
 import renderer.classifications.Renderable
 import renderer.core.Camera
-import renderer.math.Vector4
+import renderer.math.Vector3
 import renderer.utility.Rasterizer.cull
 import renderer.utility.Rasterizer.project
 import renderer.utility.Rasterizer.transform
 
 class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()): Renderable {
-    var pos = Vector4()
-    var axis = Vector4.worldUp()
-    var referenceAxis = Vector4.worldUp()
+    var pos = Vector3()
+    var axis = Vector3.worldUp()
+    var referenceAxis = Vector3.worldUp()
     var spin = 0.0
     var pitch = 0.0; var yaw = 0.0; var roll = 0.0
     var scale = 1.0
@@ -32,11 +32,11 @@ class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()): R
                 return mesh
             }
 
-            val vectorCache = mutableListOf<Vector4>()
+            val vectorCache = mutableListOf<Vector3>()
             stream.bufferedReader().forEachLine { line ->
                 val data = line.trim().split(" ")
                 when (data[0]) {
-                    "v" -> vectorCache.add(Vector4(
+                    "v" -> vectorCache.add(Vector3(
                         data[1].toDouble(),
                         data[2].toDouble(),
                         data[3].toDouble()
