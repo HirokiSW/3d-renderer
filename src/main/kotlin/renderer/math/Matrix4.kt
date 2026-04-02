@@ -124,7 +124,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
             return rotationSpin(axis.normalize(), angRad)
         }
 
-        fun world(mesh: Mesh3D): Matrix4 { //
+        fun world(mesh: Mesh3D): Matrix4 {
             var world = Matrix4.identity()
             world *= Matrix4.scale(mesh.scale)
             world *= Matrix4.rotationTilt(mesh.axis, mesh.referenceAxis)

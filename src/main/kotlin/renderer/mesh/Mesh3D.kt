@@ -7,8 +7,10 @@ import renderer.utility.Rasterizer.cull
 import renderer.utility.Rasterizer.project
 import renderer.utility.Rasterizer.transform
 
-class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()): Renderable {
-    var pos = Vector3()
+class Mesh3D(
+    var pos : Vector3 = Vector3(),
+    val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()
+): Renderable {
     var axis = Vector3.worldUp()
     var referenceAxis = Vector3.worldUp()
     var spin = 0.0
