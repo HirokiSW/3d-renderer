@@ -95,7 +95,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
             ))
         }
         fun rotationZ(angRad: Double): Matrix4 {
-            val c = cos(angRad);
+            val c = cos(angRad)
             val s = sin(angRad)
             return Matrix4(doubleArrayOf(
                 c, s, 0.0, 0.0,
@@ -107,8 +107,8 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
 
         fun rotationSpin(axis: Vector3, angRad: Double): Matrix4 {
             val x = axis.x; val y = axis.y; val z = axis.z
-            val c = cos(angRad);
-            val s = sin(angRad);
+            val c = cos(angRad)
+            val s = sin(angRad)
             val t = 1.0 - c
             return Matrix4(doubleArrayOf(
                 t*x*x + c, t*x*y + s*z, t*x*z - s*y, 0.0,
@@ -125,14 +125,14 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
         }
 
         fun world(mesh: Mesh3D): Matrix4 {
-            var world = Matrix4.identity()
-            world *= Matrix4.scale(mesh.scale)
-            world *= Matrix4.rotationTilt(mesh.axis, mesh.referenceAxis)
-            world *= Matrix4.rotationSpin(mesh.axis, mesh.spin)
-            world *= Matrix4.rotationY(mesh.yaw)
-            world *= Matrix4.rotationX(mesh.pitch)
-            world *= Matrix4.rotationZ(mesh.roll)
-            world *= Matrix4.translation(mesh.pos)
+            var world = identity()
+            world *= scale(mesh.scale)
+            world *= rotationTilt(mesh.axis, mesh.referenceAxis)
+            world *= rotationSpin(mesh.axis, mesh.spin)
+            world *= rotationY(mesh.yaw)
+            world *= rotationX(mesh.pitch)
+            world *= rotationZ(mesh.roll)
+            world *= translation(mesh.pos)
             return world
         }
 
