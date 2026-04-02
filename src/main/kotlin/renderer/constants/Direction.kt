@@ -1,5 +1,5 @@
 package renderer.constants
 
 enum class Direction {
-    RIGHT, LEFT, UP, DOWN, FORWARD, BACKWARD
+    RIGHT, UP, FORWARD, LEFT, DOWN, BACKWARD
 }

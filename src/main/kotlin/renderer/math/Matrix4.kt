@@ -137,7 +137,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
         }
 
         fun camera(pov: Camera): Matrix4 {
-            val right = pov.rightAxis; val up = pov.upAxis; val forward = pov.forwardAxis
+            val right = pov.right; val up = pov.up; val forward = pov.forward
             val pos = pov.pos
             return Matrix4(doubleArrayOf(
                 right.x, right.y, right.z, 0.0,
@@ -147,7 +147,7 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
             ))
         }
         fun view(pov: Camera): Matrix4 {
-            val right = pov.rightAxis; val up = pov.upAxis; val forward = pov.forwardAxis
+            val right = pov.right; val up = pov.up; val forward = pov.forward
             val pos = pov.pos
             return Matrix4(doubleArrayOf(
                 right.x, up.x, forward.x, 0.0,
