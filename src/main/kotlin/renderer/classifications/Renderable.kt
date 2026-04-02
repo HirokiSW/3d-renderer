@@ -1,7 +1,8 @@
 package renderer.classifications
 
+import renderer.core.Camera
 import renderer.mesh.Triangle3D
 
 interface Renderable {
-    val trisToRender: MutableList<Triangle3D>
+    fun trisToRender(pov: Camera): MutableList<Triangle3D>
 }

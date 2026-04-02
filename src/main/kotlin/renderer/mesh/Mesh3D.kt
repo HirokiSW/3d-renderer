@@ -1,14 +1,26 @@
 package renderer.mesh
 
+import renderer.classifications.Renderable
+import renderer.core.Camera
 import renderer.math.Vector4
+import renderer.utility.Rasterizer.cull
+import renderer.utility.Rasterizer.project
+import renderer.utility.Rasterizer.transform
 
-class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()) {
+class Mesh3D(val tris: MutableList<Triangle3D> = mutableListOf<Triangle3D>()): Renderable {
     var pos = Vector4()
     var axis = Vector4.worldUp()
     var referenceAxis = Vector4.worldUp()
     var spin = 0.0
     var pitch = 0.0; var yaw = 0.0; var roll = 0.0
     var scale = 1.0
+
+    override fun trisToRender(pov: Camera): MutableList<Triangle3D> {
+        val transformedTris = transform(tris, this)
+        val culledTris = cull(transformedTris, pov)
+        val projectedTris = project(culledTris)
+        return projectedTris
+    }
 
     companion object {
         fun loadOBJ(fileName: String): Mesh3D {

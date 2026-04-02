@@ -1,6 +1,8 @@
 package renderer.math
 
 import renderer.constants.Perspective
+import renderer.core.Camera
+import renderer.mesh.Mesh3D
 import kotlin.math.acos
 import kotlin.math.sin
 import kotlin.math.cos
@@ -122,17 +124,37 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
             return rotationSpin(axis.normalize(), angRad)
         }
 
-        fun camera(pos: Vector4, right: Vector4, up: Vector4, forward: Vector4) = Matrix4(doubleArrayOf(
-            right.x, right.y, right.z, 0.0,
-            up.x, up.y, up.z, 0.0,
-            forward.x, forward.y, forward.z, 0.0,
-            pos.x, pos.y, pos.z, 1.0
-        ))
-        fun view(pos: Vector4, right: Vector4, up: Vector4, forward: Vector4) = Matrix4(doubleArrayOf(
-            right.x, up.x, forward.x, 0.0,
-            right.y, up.y, forward.y, 0.0,
-            right.z, up.z, forward.z, 0.0,
-            -pos.dot(right), -pos.dot(up), -pos.dot(forward), 1.0
-        ))
+        fun world(mesh: Mesh3D): Matrix4 { //
+            var world = Matrix4.identity()
+            world *= Matrix4.scale(mesh.scale)
+            world *= Matrix4.rotationTilt(mesh.axis, mesh.referenceAxis)
+            world *= Matrix4.rotationSpin(mesh.axis, mesh.spin)
+            world *= Matrix4.rotationY(mesh.yaw)
+            world *= Matrix4.rotationX(mesh.pitch)
+            world *= Matrix4.rotationZ(mesh.roll)
+            world *= Matrix4.translation(mesh.pos)
+            return world
+        }
+
+        fun camera(pov: Camera): Matrix4 {
+            val right = pov.rightAxis; val up = pov.upAxis; val forward = pov.forwardAxis
+            val pos = pov.pos
+            return Matrix4(doubleArrayOf(
+                right.x, right.y, right.z, 0.0,
+                up.x, up.y, up.z, 0.0,
+                forward.x, forward.y, forward.z, 0.0,
+                pos.x, pos.y, pos.z, 1.0
+            ))
+        }
+        fun view(pov: Camera): Matrix4 {
+            val right = pov.rightAxis; val up = pov.upAxis; val forward = pov.forwardAxis
+            val pos = pov.pos
+            return Matrix4(doubleArrayOf(
+                right.x, up.x, forward.x, 0.0,
+                right.y, up.y, forward.y, 0.0,
+                right.z, up.z, forward.z, 0.0,
+                -pos.dot(right), -pos.dot(up), -pos.dot(forward), 1.0
+            ))
+        }
     }
 }

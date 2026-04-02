@@ -41,7 +41,7 @@ class Canvas: JComponent() {
     fun renderGraphics(g2d: Graphics2D) {
         val allTris = mutableListOf<Triangle3D>()
         for (rdr in renderables) {
-            allTris.addAll(rdr.trisToRender)
+            allTris.addAll(rdr.trisToRender(pov))
         }
         allTris.sortByDescending { it.viewDepth() }
         for (tri in allTris) {

@@ -48,5 +48,4 @@ data class Triangle3D(
     fun centroid() = (p1 + p2 + p3)/3.0
     fun normal() = ((p2 - p1).cross(p3 - p2)).normalize()
     fun viewDepth() = (p1.z + p2.z + p3.z)/3.0
-    fun facingCamera(pov: Camera) = (centroid() - pov.pos).dot(normal()) < 0.0
 }
