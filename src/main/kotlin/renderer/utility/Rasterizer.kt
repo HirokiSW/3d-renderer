@@ -13,6 +13,7 @@ object Rasterizer {
         val world = Matrix4.world(mesh)
         for (tri in tris) {
             val triWorld = tri.copy()
+            triWorld.copyProperties(triWorld)
             triWorld *= world
             transformed.add(triWorld)
         }
@@ -22,10 +23,12 @@ object Rasterizer {
         val culled = mutableListOf<Triangle3D>()
         for (tri in tris) {
             val isFacingCamera = (tri.centroid() - pov.pos).dot(tri.normal()) < 0.0
-            val triCulled = tri.copy()
+            val triView = tri.copy()
+            triView.copyProperties(tri)
             if (isFacingCamera || RenderMode.current == RenderMode.WIREFRAME) {
-                triCulled *= Matrix4.view(pov)
-                culled.addAll(Clipper.depthClip(triCulled))
+                triView *= Matrix4.view(pov)
+                triView.thickness = (1.0/triView.centroid().z).coerceIn(0.01, 1.0).toFloat()
+                culled.addAll(Clipper.depthClip(triView))
             }
         }
         return culled
@@ -34,6 +37,7 @@ object Rasterizer {
         val projected = mutableListOf<Triangle3D>()
         for (tri in tris) {
             val triProjected = tri.copy()
+            triProjected.copyProperties(tri)
             triProjected *= Matrix4.projection()
             perspectiveDivide(triProjected)
             scaleToScreen(triProjected)

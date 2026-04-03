@@ -6,7 +6,9 @@ import renderer.mesh.Triangle3D
 
 object Clipper {
     fun depthClip(tri: Triangle3D): MutableList<Triangle3D> {
-        return trianglesClippingAgainstPlane(Plane.depth(), tri)
+        val clipped = trianglesClippingAgainstPlane(Plane.depth(), tri)
+        clipped.forEach { it.copyProperties(tri) }
+        return clipped
     }
     fun screenClip(tri: Triangle3D): MutableList<Triangle3D> {
         val toClip = ArrayDeque<Triangle3D>()
@@ -15,8 +17,9 @@ object Clipper {
         for (plane in planes) {
             val currentSize = toClip.size
             repeat(currentSize) {
-                val tri = toClip.removeFirst()
-                toClip.addAll(trianglesClippingAgainstPlane(plane, tri))
+                val triToClip = toClip.removeFirst()
+                triToClip.copyProperties(tri)
+                toClip.addAll(trianglesClippingAgainstPlane(plane, triToClip))
             }
         }
         return toClip.toMutableList()
@@ -33,24 +36,24 @@ object Clipper {
         when (insidePoints.size) {
             0 -> Unit
             1 -> trisClipped.add(Triangle3D(
-                insidePoints[0].copy(),
+                insidePoints[0],
                 vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[0]),
                 vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[1])
             ))
             2 -> {
                 val sharedPoint = vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[0])
                 trisClipped.add(Triangle3D(
-                    insidePoints[0].copy(),
-                    insidePoints[1].copy(),
-                    sharedPoint.copy()
+                    insidePoints[0],
+                    insidePoints[1],
+                    sharedPoint
                 ))
                 trisClipped.add(Triangle3D(
-                    insidePoints[1].copy(),
-                    sharedPoint.copy(),
+                    insidePoints[1],
+                    sharedPoint,
                     vectorsIntersectingPlane(plane, insidePoints[1], outsidePoints[0])
                 ))
             }
-            3 -> trisClipped.add(tri.copy())
+            3 -> trisClipped.add(tri)
         }
         return trisClipped
     }
