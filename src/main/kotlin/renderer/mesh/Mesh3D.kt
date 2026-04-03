@@ -25,8 +25,8 @@ class Mesh3D(
     }
 
     companion object {
-        fun loadOBJ(fileName: String): Mesh3D {
-            val mesh = Mesh3D()
+        fun loadOBJ(fileName: String, pos: Vector3 = Vector3()): Mesh3D {
+            val mesh = Mesh3D(pos)
             val path = "/models/$fileName"
             val stream = Mesh3D::class.java.getResourceAsStream(path)
             if (stream == null) {

@@ -22,8 +22,8 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
         }
         return rows.joinToString("\n")
     }
-    operator fun get(row: Int, col: Int): Double = m[col*4 + row]
-    operator fun set(row: Int, col: Int, value: Double) { m[col*4 + row] = value }
+    operator fun get(row: Int, col: Int): Double = m[row*4 + col]
+    operator fun set(row: Int, col: Int, value: Double) { m[row*4 + col] = value }
 
     operator fun times(v: Vector3) = Vector3(
         v.x*this[0, 0] + v.y*this[1, 0] + v.z*this[2, 0] + v.w*this[3, 0],
@@ -51,8 +51,8 @@ class Matrix4(var m: DoubleArray = DoubleArray(16)) {
 
         fun projection(): Matrix4 {
             val fov = 1.0/tan(Perspective.ANGLE_OF_VIEW/2.0)
-            val fovRatio = fov/ Perspective.ASPECT_RATIO
-            val depthNormalize = Perspective.Z_FAR /(Perspective.Z_FAR - Perspective.Z_NEAR)
+            val fovRatio = fov/Perspective.ASPECT_RATIO
+            val depthNormalize = Perspective.Z_FAR/(Perspective.Z_FAR - Perspective.Z_NEAR)
             val depthOffset = (-Perspective.Z_FAR*Perspective.Z_NEAR)/(Perspective.Z_FAR - Perspective.Z_NEAR)
             return Matrix4(doubleArrayOf(
                 fovRatio, 0.0, 0.0, 0.0,
