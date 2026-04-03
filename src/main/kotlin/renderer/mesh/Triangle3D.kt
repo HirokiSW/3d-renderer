@@ -44,6 +44,6 @@ data class Triangle3D(
     operator fun timesAssign(m: Matrix4) { p1 = m*p1; p2 = m*p2; p3 = m*p3 }
 
     fun centroid() = (p1 + p2 + p3)/3.0
-    fun normal() = ((p2 - p1).cross(p3 - p2)).normalize()
+    fun normal() = ((p2 - p1).cross(p3 - p1)).normalize()
     fun viewDepth() = (p1.z + p2.z + p3.z)/3.0
 }
