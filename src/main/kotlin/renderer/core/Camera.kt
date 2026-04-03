@@ -19,21 +19,21 @@ class Camera(var pos: Vector3 = Vector3()): Updatable {
         handleRotation(timeElapsedInMillis)
     }
     private fun handleMovement(timeElapsedInMillis: Int) {
-        val dt = timeElapsedInMillis.toDouble()
-        if (isMoving[Direction.RIGHT] == true) move(right, speed*dt)
-        if (isMoving[Direction.LEFT] == true) move(right, -speed*dt)
-        if (isMoving[Direction.UP] == true) move(up, speed*dt)
-        if (isMoving[Direction.DOWN] == true) move(up, -speed*dt)
-        if (isMoving[Direction.FORWARD] == true) move(forward, speed*dt)
-        if (isMoving[Direction.BACKWARD] == true) move(forward, -speed*dt)
+        val dt = timeElapsedInMillis/1000.0
+        if (isMoving[Direction.RIGHT] == true)      move(right, speed*dt)
+        if (isMoving[Direction.LEFT] == true)       move(right, -speed*dt)
+        if (isMoving[Direction.UP] == true)         move(up, speed*dt)
+        if (isMoving[Direction.DOWN] == true)       move(up, -speed*dt)
+        if (isMoving[Direction.FORWARD] == true)    move(forward, speed*dt)
+        if (isMoving[Direction.BACKWARD] == true)   move(forward, -speed*dt)
     }
     private fun handleRotation(timeElapsedInMillis: Int) {
-        val dt = timeElapsedInMillis.toDouble()
-        if (isRotating[Direction.RIGHT] == true) yaw(rotSpeed*dt)
-        if (isRotating[Direction.LEFT] == true) yaw(-rotSpeed*dt)
-        if (isRotating[Direction.UP] == true) pitch(rotSpeed*dt)
-        if (isRotating[Direction.DOWN] == true) pitch(-rotSpeed*dt)
-        if (isRotating[Direction.FORWARD] == true) roll(rotSpeed*dt)
+        val dt = timeElapsedInMillis/1000.0
+        if (isRotating[Direction.RIGHT] == true)    yaw(rotSpeed*dt)
+        if (isRotating[Direction.LEFT] == true)     yaw(-rotSpeed*dt)
+        if (isRotating[Direction.UP] == true)       pitch(rotSpeed*dt)
+        if (isRotating[Direction.DOWN] == true)     pitch(-rotSpeed*dt)
+        if (isRotating[Direction.FORWARD] == true)  roll(rotSpeed*dt)
         if (isRotating[Direction.BACKWARD] == true) roll(-rotSpeed*dt)
     }
 
