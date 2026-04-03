@@ -1,5 +1,7 @@
 package renderer.window
 
+import renderer.classifications.Buildable
+import renderer.classifications.Drawable
 import renderer.classifications.Renderable
 import renderer.classifications.Updatable
 import renderer.constants.Perspective
@@ -7,6 +9,7 @@ import renderer.constants.Screen
 import renderer.core.Camera
 import renderer.core.Controller
 import renderer.mesh.Triangle3D
+import renderer.scene.TestScene
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,13 +20,18 @@ class Canvas: JComponent() {
     val pov = Camera()
     val player = Controller(pov)
     val renderables = mutableListOf<Renderable>()
+    val drawables = mutableListOf<Drawable>()
     val updatables = mutableListOf<Updatable>()
+    val buildables = mutableListOf<Buildable>()
 
     init {
         preferredSize = Dimension(Screen.WIDTH, Screen.HEIGHT)
         isFocusable = true
         requestFocusInWindow()
         addKeyListener(player)
+        updatables.add(pov)
+        buildables.add(TestScene())
+        buildables.forEach { it.build(renderables, updatables) }
     }
 
     override fun paintComponent(g: Graphics) {
@@ -32,7 +40,7 @@ class Canvas: JComponent() {
         Perspective.ASPECT_RATIO = Screen.WIDTH.toDouble()/Screen.HEIGHT
         val g2d = g as Graphics2D
         val revert = g2d.transform
-        g2d.background = Color.BLACK
+        g2d.background = Color.WHITE
         g2d.clearRect(0, 0, width, height)
         renderGraphics(g2d)
         g2d.transform = revert
@@ -40,18 +48,13 @@ class Canvas: JComponent() {
 
     fun renderGraphics(g2d: Graphics2D) {
         val allTris = mutableListOf<Triangle3D>()
-        for (rdr in renderables) {
-            allTris.addAll(rdr.trisToRender(pov))
-        }
+        renderables.forEach { rdr -> allTris.addAll(rdr.trisToRender(pov)) }
         allTris.sortByDescending { it.viewDepth() }
-        for (tri in allTris) {
-            tri.draw(g2d)
-        }
+        allTris.forEach { it.draw(g2d) }
+        drawables.forEach { it.draw(g2d) }
     }
 
     fun updatePositions(timeElapsedInMillis: Int) {
-        for (updatable in updatables) {
-            updatable.updateObject(timeElapsedInMillis)
-        }
+        updatables.forEach { it.updateObject(timeElapsedInMillis) }
     }
 }

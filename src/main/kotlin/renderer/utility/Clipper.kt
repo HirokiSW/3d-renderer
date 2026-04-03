@@ -12,14 +12,12 @@ object Clipper {
         val toClip = ArrayDeque<Triangle3D>()
         val planes = arrayOf(Plane.top(), Plane.bottom(), Plane.left(), Plane.right())
         toClip.addLast(tri)
-        var newTrisCount = 1
         for (plane in planes) {
-            while (newTrisCount > 0) {
-                val currTri = toClip.removeFirst()
-                newTrisCount--
-                toClip.addAll(trianglesClippingAgainstPlane(plane, currTri))
+            val currentSize = toClip.size
+            repeat(currentSize) {
+                val tri = toClip.removeFirst()
+                toClip.addAll(trianglesClippingAgainstPlane(plane, tri))
             }
-            newTrisCount = toClip.size
         }
         return toClip.toMutableList()
     }
@@ -29,30 +27,30 @@ object Clipper {
         val insidePoints = mutableListOf<Vector3>()
         val outsidePoints = mutableListOf<Vector3>()
         for (point in listOf(tri.p1, tri.p2, tri.p3)) {
-            if (distanceToPlane(plane, point) >= 0) insidePoints.add(point)
+            if (distanceToPlane(plane, point) > 0.0) insidePoints.add(point)
             else outsidePoints.add(point)
         }
         when (insidePoints.size) {
             0 -> Unit
             1 -> trisClipped.add(Triangle3D(
-                insidePoints[0],
+                insidePoints[0].copy(),
                 vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[0]),
                 vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[1])
             ))
             2 -> {
                 val sharedPoint = vectorsIntersectingPlane(plane, insidePoints[0], outsidePoints[0])
                 trisClipped.add(Triangle3D(
-                    insidePoints[0],
-                    insidePoints[1],
-                    sharedPoint
+                    insidePoints[0].copy(),
+                    insidePoints[1].copy(),
+                    sharedPoint.copy()
                 ))
                 trisClipped.add(Triangle3D(
-                    insidePoints[1],
-                    sharedPoint,
+                    insidePoints[1].copy(),
+                    sharedPoint.copy(),
                     vectorsIntersectingPlane(plane, insidePoints[1], outsidePoints[0])
                 ))
             }
-            3 -> trisClipped.add(tri)
+            3 -> trisClipped.add(tri.copy())
         }
         return trisClipped
     }
@@ -60,6 +58,7 @@ object Clipper {
         val planeD = -plane.normal.dot(plane.point)
         val ad = plane.normal.dot(lineStart)
         val bd = plane.normal.dot(lineEnd)
+        if ((bd - ad) == 0.0) return lineStart
         val t = (-planeD - ad)/(bd - ad)
         return lineStart + (lineEnd - lineStart)*t
     }
