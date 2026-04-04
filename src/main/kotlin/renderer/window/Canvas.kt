@@ -43,7 +43,11 @@ class Canvas: JComponent() {
         val revert = g2d.transform
         g2d.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON
+            RenderingHints.VALUE_ANTIALIAS_OFF
+        )
+        g2d.setRenderingHint(
+            RenderingHints.KEY_RENDERING,
+            RenderingHints.VALUE_RENDER_SPEED
         )
         g2d.background = Color.WHITE
         g2d.clearRect(0, 0, width, height)

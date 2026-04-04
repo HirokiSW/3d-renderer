@@ -16,8 +16,7 @@ data class Triangle3D(
     var p3: Vector3 = Vector3(),
 ): Drawable {
     var thickness = 0.5f
-    val luminosity = mutableMapOf<ColorType, Float>()
-    
+
     override fun draw(g2d: Graphics2D) {
         val revert = g2d.transform
         val path = Path2D.Double()
@@ -49,9 +48,6 @@ data class Triangle3D(
 
     fun copyProperties(tri: Triangle3D) {
         thickness = tri.thickness
-        luminosity[ColorType.RED] = tri.luminosity[ColorType.RED] ?: 0.0f
-        luminosity[ColorType.BLUE] = tri.luminosity[ColorType.BLUE] ?: 0.0f
-        luminosity[ColorType.GREEN] = tri.luminosity[ColorType.GREEN] ?: 0.0f
     }
     fun centroid() = (p1 + p2 + p3)/3.0
     fun normal() = ((p2 - p1).cross(p3 - p1)).normalize()
