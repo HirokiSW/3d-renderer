@@ -6,9 +6,7 @@ import renderer.mesh.Triangle3D
 
 object Clipper {
     fun depthClip(tri: Triangle3D): MutableList<Triangle3D> {
-        val clipped = trianglesClippingAgainstPlane(Plane.depth(), tri)
-        clipped.forEach { it.copyProperties(tri) }
-        return clipped
+        return trianglesClippingAgainstPlane(Plane.depth(), tri)
     }
     fun screenClip(tri: Triangle3D): MutableList<Triangle3D> {
         val toClip = ArrayDeque<Triangle3D>()
@@ -18,7 +16,6 @@ object Clipper {
             val currentSize = toClip.size
             repeat(currentSize) {
                 val triToClip = toClip.removeFirst()
-                triToClip.copyProperties(tri)
                 toClip.addAll(trianglesClippingAgainstPlane(plane, triToClip))
             }
         }
