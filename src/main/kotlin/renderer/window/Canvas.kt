@@ -5,11 +5,13 @@ import renderer.classifications.Drawable
 import renderer.classifications.Renderable
 import renderer.classifications.Updatable
 import renderer.constants.Perspective
+import renderer.constants.RenderMode
 import renderer.constants.Screen
 import renderer.core.Camera
 import renderer.core.Controller
 import renderer.mesh.Triangle3D
 import renderer.scene.TestScene
+import renderer.utility.ZBuffer
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
@@ -41,14 +43,8 @@ class Canvas: JComponent() {
         Perspective.ASPECT_RATIO = Screen.WIDTH.toDouble()/Screen.HEIGHT
         val g2d = g as Graphics2D
         val revert = g2d.transform
-        g2d.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_OFF
-        )
-        g2d.setRenderingHint(
-            RenderingHints.KEY_RENDERING,
-            RenderingHints.VALUE_RENDER_SPEED
-        )
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
         g2d.background = Color.WHITE
         g2d.clearRect(0, 0, width, height)
         renderGraphics(g2d)
@@ -58,8 +54,14 @@ class Canvas: JComponent() {
     fun renderGraphics(g2d: Graphics2D) {
         val allTris = mutableListOf<Triangle3D>()
         renderables.forEach { rdr -> allTris.addAll(rdr.trisToRender(pov)) }
-        allTris.sortByDescending { it.viewDepth() }
-        allTris.forEach { it.draw(g2d) }
+        if (RenderMode.current >= RenderMode.LIGHT) {
+            ZBuffer.clear()
+            allTris.forEach { ZBuffer.rasterize(it) }
+            ZBuffer.draw(g2d)
+        } else {
+            allTris.sortByDescending { it.viewDepth() }
+            allTris.forEach { it.draw(g2d) }
+        }
         drawables.forEach { it.draw(g2d) }
     }
 
