@@ -1,7 +1,6 @@
 package renderer.constants
 
 import kotlin.math.PI
-import kotlin.math.tan
 
 object Perspective {
     var ASPECT_RATIO = Screen.WIDTH.toDouble()/Screen.HEIGHT

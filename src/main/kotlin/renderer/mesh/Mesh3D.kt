@@ -3,9 +3,7 @@ package renderer.mesh
 import renderer.classifications.Renderable
 import renderer.core.Camera
 import renderer.math.Vector3
-import renderer.utility.Rasterizer.cull
-import renderer.utility.Rasterizer.project
-import renderer.utility.Rasterizer.transform
+import renderer.utility.Projector
 
 class Mesh3D(
     var pos : Vector3 = Vector3(),
@@ -18,9 +16,9 @@ class Mesh3D(
     var scale = 1.0
 
     override fun trisToRender(pov: Camera): MutableList<Triangle3D> {
-        val transformedTris = transform(tris, this)
-        val culledTris = cull(transformedTris, pov)
-        val projectedTris = project(culledTris)
+        val transformedTris = Projector.transform(tris, this)
+        val culledTris = Projector.cull(transformedTris, pov)
+        val projectedTris = Projector.project(culledTris)
         return projectedTris
     }
 

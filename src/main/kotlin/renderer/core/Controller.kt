@@ -26,7 +26,7 @@ class Controller(val pov: Camera): KeyListener {
 
             KeyEvent.VK_1     -> RenderMode.switchTo(RenderMode.WIREFRAME)
             KeyEvent.VK_2     -> RenderMode.switchTo(RenderMode.SOLID)
-            KeyEvent.VK_3     -> RenderMode.switchTo(RenderMode.COLOR)
+            KeyEvent.VK_3     -> RenderMode.switchTo(RenderMode.LIGHT)
         }
     }
     override fun keyReleased(e: KeyEvent?) {

@@ -8,7 +8,7 @@ import renderer.math.Vector3
 import renderer.mesh.Mesh3D
 import renderer.mesh.Triangle3D
 
-object Rasterizer {
+object Projector {
     fun transform(tris: MutableList<Triangle3D>, mesh: Mesh3D): MutableList<Triangle3D> {
         val transformed = mutableListOf<Triangle3D>()
         val world = Matrix4.world(mesh)
@@ -24,7 +24,7 @@ object Rasterizer {
         for (tri in tris) {
             val isFacingCamera = (tri.centroid() - pov.pos).dot(tri.normal()) < 0.0
             val triView = tri.copy()
-            if (isFacingCamera || RenderMode.current == RenderMode.WIREFRAME) {
+            if (isFacingCamera || RenderMode.current == RenderMode.WIREFRAME || RenderMode.current >= RenderMode.LIGHT) {
                 triView *= Matrix4.view(pov)
                 culled.addAll(Clipper.depthClip(triView))
             }
@@ -50,7 +50,6 @@ object Rasterizer {
         tri.p1 = Vector3(tri.p1.x*w1, tri.p1.y*w1, tri.p1.z*w1, w1)
         tri.p2 = Vector3(tri.p2.x*w2, tri.p2.y*w2, tri.p2.z*w2, w2)
         tri.p3 = Vector3(tri.p3.x*w3, tri.p3.y*w3, tri.p3.z*w3, w3)
-
     }
     private fun scaleToScreen(tri: Triangle3D) {
         tri.p1.x = (tri.p1.x + 1.0)*0.5*Screen.WIDTH

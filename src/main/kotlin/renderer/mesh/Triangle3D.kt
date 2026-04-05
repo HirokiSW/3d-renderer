@@ -6,6 +6,7 @@ import renderer.constants.RenderMode
 import renderer.math.Matrix4
 import renderer.math.Vector3
 import java.awt.BasicStroke
+import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.geom.Path2D
 
@@ -13,6 +14,7 @@ data class Triangle3D(
     var p1: Vector3 = Vector3(),
     var p2: Vector3 = Vector3(),
     var p3: Vector3 = Vector3(),
+    var color: Color = Color.DARK_GRAY
 ): Drawable {
     override fun draw(g2d: Graphics2D) {
         val revert = g2d.transform
@@ -32,14 +34,12 @@ data class Triangle3D(
                 g2d.draw(path)
             }
             RenderMode.SOLID -> {
-                g2d.color = Properties.SOLID_FILL_COLOR
+                g2d.color = Properties.DEFAULT_FILL_COLOR
                 g2d.fill(path)
                 g2d.color = Properties.OUTLINE_COLOR
                 g2d.draw(path)
             }
-            RenderMode.COLOR -> {
-                TODO("Not yet implemented")
-            }
+            else -> { }
         }
         g2d.transform = revert
     }
